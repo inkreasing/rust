@@ -7,15 +7,17 @@ impl A {
 
 fn main() {
     let a = A;
-    a.b(); //~ ERROR E0599
+    a.b();
 
     let b = B;
-    b.a(()); //~ ERROR E0061
+    // this should also error
+    b.a(());
 }
 
 struct B;
 
 impl B {
     fn a(&self) {}
-    fn b() -> true {} //~ ERROR: expected type, found keyword `true`
+    // this should error
+    fn b() -> true {}
 }

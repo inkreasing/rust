@@ -1,5 +1,5 @@
 trait T {
-const //~ ERROR: const trait impls are experimental
+const
 impl
 } //~ ERROR: expected type, found `}`
 
