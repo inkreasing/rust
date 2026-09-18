@@ -1,0 +1,52 @@
+error: expected type, found keyword `true`
+  --> $DIR/issue-162947.rs:4:15
+   |
+LL | impl A {
+   |        - while parsing this item list starting here
+LL |     fn a() -> true {}
+   |               ^^^^ expected type
+LL |     fn b(&self) {}
+LL | }
+   | - the item list ends here
+
+error: expected type, found keyword `true`
+  --> $DIR/issue-162947.rs:20:15
+   |
+LL | impl B {
+   |        - while parsing this item list starting here
+LL |     fn a(&self) {}
+LL |     fn b() -> true {}
+   |               ^^^^ expected type
+LL | }
+   | - the item list ends here
+
+error[E0599]: no method named `b` found for struct `A` in the current scope
+  --> $DIR/issue-162947.rs:10:7
+   |
+LL | struct A;
+   | -------- method `b` not found for this struct
+...
+LL |     a.b();
+   |       ^ method not found in `A`
+
+error[E0061]: this method takes 0 arguments but 1 argument was supplied
+  --> $DIR/issue-162947.rs:13:7
+   |
+LL |     b.a(());
+   |       ^ -- unexpected argument of type `()`
+   |
+note: method defined here
+  --> $DIR/issue-162947.rs:19:8
+   |
+LL |     fn a(&self) {}
+   |        ^
+help: remove the extra argument
+   |
+LL -     b.a(());
+LL +     b.a();
+   |
+
+error: aborting due to 4 previous errors
+
+Some errors have detailed explanations: E0061, E0599.
+For more information about an error, try `rustc --explain E0061`.
