@@ -1009,13 +1009,14 @@ impl<'a> Parser<'a> {
                 Ok(Some(item)) => items.extend(item),
                 Err(err) => {
                     self.consume_block(exp!(OpenBrace), exp!(CloseBrace), ConsumeClosingDelim::Yes);
-                    err.with_span_label(
-                        open_brace_span,
-                        "while parsing this item list starting here",
-                    )
-                    .with_span_label(self.prev_token.span, "the item list ends here")
-                    .emit();
-                    break;
+                    // return the error immediately as otherwise this can create false positive name resolution errors.
+                    return Err(
+                        err.with_span_label(
+                            open_brace_span,
+                            "while parsing this item list starting here",
+                        )
+                        .with_span_label(self.prev_token.span, "the item list ends here"),
+                    );
                 }
             }
         }
