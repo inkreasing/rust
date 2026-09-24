@@ -1570,7 +1570,8 @@ impl<'a> Parser<'a> {
                     .emit_err(crate::diagnostics::MacroInvocationWithQualifiedPath(path.span));
             }
             let lo = path.span;
-            let mac = Box::new(MacCall { path, args: self.parse_delim_args()? });
+            // TODO: make statement position global_asm work
+            let mac = Box::new(MacCall { path, args: self.parse_delim_args()?, unsafety: false });
             (lo.to(self.prev_token.span), ExprKind::MacCall(mac))
         } else if self.check(exp!(OpenBrace))
             && let Some(expr) = self.maybe_parse_struct_expr(&qself, &path)

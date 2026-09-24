@@ -1316,7 +1316,8 @@ impl<'a> Parser<'a> {
     fn parse_pat_mac_invoc(&mut self, path: Path) -> PResult<'a, PatKind> {
         self.bump();
         let args = self.parse_delim_args()?;
-        let mac = Box::new(MacCall { path, args });
+        // TODO
+        let mac = Box::new(MacCall { path, args, unsafety: false });
         Ok(PatKind::MacCall(mac))
     }
 

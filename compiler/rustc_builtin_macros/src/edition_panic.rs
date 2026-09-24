@@ -61,6 +61,8 @@ fn expand<'cx>(
                     delim: Delimiter::Parenthesis,
                     tokens: tts,
                 }),
+                // TODO
+                unsafety: false,
             })),
         ),
     ))

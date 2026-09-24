@@ -22,6 +22,8 @@ pub(crate) fn placeholder(
                 delim: Delimiter::Parenthesis,
                 tokens: ast::tokenstream::TokenStream::new(Vec::new()),
             }),
+            // TODO
+            unsafety: false,
         })
     }
 

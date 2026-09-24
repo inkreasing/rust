@@ -383,7 +383,7 @@ impl<'a> Parser<'a> {
                 fn_parse_mode,
                 Case::Insensitive,
             );
-        } else if macros_allowed && self.check_path() {
+        } else if macros_allowed && let unsafety = self.eat_keyword_case(exp!(Unsafe), case) && self.check_path() {
             // Detect `field_name: Type` or `self: Type` inside a trait body and emit
             // a clearer diagnostic before falling through to the macro invocation path.
             let is_field_in_trait = fn_parse_mode.context == FnContext::Trait
@@ -396,7 +396,7 @@ impl<'a> Parser<'a> {
                 self.recover_missing_kw_before_item()?;
             }
             // MACRO INVOCATION ITEM
-            ItemKind::MacCall(Box::new(self.parse_item_macro(vis)?))
+            ItemKind::MacCall(Box::new(self.parse_item_macro(vis, unsafety)?))
         } else {
             return Ok(None);
         };
@@ -601,7 +601,7 @@ impl<'a> Parser<'a> {
     }
 
     /// Parses an item macro, e.g., `item!();`.
-    fn parse_item_macro(&mut self, vis: &Visibility) -> PResult<'a, MacCall> {
+    fn parse_item_macro(&mut self, vis: &Visibility, unsafety: bool) -> PResult<'a, MacCall> {
         let path = self.parse_path(PathStyle::Mod)?; // `foo::bar`
         self.expect(exp!(Bang))?; // `!`
         match self.parse_delim_args() {
@@ -609,7 +609,7 @@ impl<'a> Parser<'a> {
             Ok(args) => {
                 self.eat_semi_for_macro_if_needed(&args, Some(&path));
                 self.complain_if_pub_macro(vis, false);
-                Ok(MacCall { path, args })
+                Ok(MacCall { path, args, unsafety })
             }
 
             Err(mut err) => {

@@ -60,6 +60,8 @@ pub(crate) fn expand_assert<'cx>(
                     delim: Delimiter::Parenthesis,
                     tokens,
                 }),
+                // TODO: i think this may also be correct since it just calls the panic macro?
+                unsafety: false,
             })),
         );
         expr_if_not(cx, call_site_span, cond_expr, then, None)

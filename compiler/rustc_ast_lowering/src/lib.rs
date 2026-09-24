@@ -651,6 +651,8 @@ fn index_ast<'tcx>(
                         delim: Delimiter::Parenthesis,
                         tokens: TokenStream::new(Vec::new()),
                     }),
+                    //TODO: this should be fine here, since it is only a dummy
+                    unsafety: false
                 })),
                 tokens: None,
             })

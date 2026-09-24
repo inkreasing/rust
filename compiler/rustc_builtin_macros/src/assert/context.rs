@@ -178,6 +178,8 @@ impl<'cx, 'a> Context<'cx, 'a> {
                     delim: Delimiter::Parenthesis,
                     tokens: initial.into_iter().chain(captures).collect::<TokenStream>(),
                 }),
+                // TODO
+                unsafety: false,
             })),
         )
     }

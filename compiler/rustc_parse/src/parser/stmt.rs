@@ -254,7 +254,8 @@ impl<'a> Parser<'a> {
             _ => MacStmtStyle::NoBraces,
         };
 
-        let mac = Box::new(MacCall { path, args });
+        // TODO
+        let mac = Box::new(MacCall { path, args, unsafety: false });
 
         let kind = if (style == MacStmtStyle::Braces
             && !matches!(self.token.kind, token::Dot | token::Question))

@@ -1028,7 +1028,8 @@ impl<'a> Parser<'a> {
         let path = self.parse_path_inner(PathStyle::Type, ty_generics)?;
         if self.eat(exp!(Bang)) {
             // Macro invocation in type position
-            Ok(TyKind::MacCall(Box::new(MacCall { path, args: self.parse_delim_args()? })))
+            // TODO
+            Ok(TyKind::MacCall(Box::new(MacCall { path, args: self.parse_delim_args()?, unsafety: false })))
         } else if allow_plus == AllowPlus::Yes && self.check_plus() {
             // `Trait1 + Trait2 + 'a`
             self.finish_parsing_bare_trait_object_ty(

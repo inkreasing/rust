@@ -2056,6 +2056,8 @@ pub enum ClosureBinder {
 pub struct MacCall {
     pub path: Path,
     pub args: Box<DelimArgs>,
+    // if the macro had the unsafe keyword before it
+    pub unsafety: bool,
 }
 
 impl MacCall {
